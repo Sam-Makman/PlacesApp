@@ -12,7 +12,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Realm user model
  */
-public class User extends RealmObject implements Parcelable {
+public class User extends RealmObject {
 
     @PrimaryKey
     private String mName;
@@ -34,32 +34,4 @@ public class User extends RealmObject implements Parcelable {
         this.mPlaces = mPlaces;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mName);
-        dest.writeList(this.mPlaces);
-    }
-
-    protected User(Parcel in) {
-        this.mName = in.readString();
-        this.mPlaces = new RealmList<Place>();
-        in.readList(this.mPlaces, Place.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel source) {
-            return new User(source);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }

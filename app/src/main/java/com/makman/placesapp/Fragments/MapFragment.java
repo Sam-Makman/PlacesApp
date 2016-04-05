@@ -1,7 +1,5 @@
 package com.makman.placesapp.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,7 +17,7 @@ public class MapFragment extends Fragment {
     public static MapFragment newInstance(User user) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_USER, user);
+        args.putString(ARG_USER, user.getmName());
         fragment.setArguments(args);
         return fragment;
     }
