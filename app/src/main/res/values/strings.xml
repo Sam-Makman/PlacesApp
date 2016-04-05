@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Places App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_user_name">Enter User Name</string>
+    <string name="login_login">Login</string>
+    <string name="login_new_account">Create Account</string>
+    <string name="login_user_exists">User Already Exists</string>
+    <string name="login_enter_user_name">Please Enter User Name</string>
+</resources>
