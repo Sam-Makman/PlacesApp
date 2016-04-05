@@ -1,19 +1,16 @@
-package com.makman.placesapp.Fragments;
+package com.makman.placesapp;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import com.makman.placesapp.Models.User;
-import com.makman.placesapp.R;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -90,7 +87,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             query.equalTo("mName", name);
             RealmResults<User> results = query.findAll();
             User user = results.first();
-            MapFragment map = MapFragment.newInstance(user);
+            PlaceFragment map = PlaceFragment.newInstance(user);
             android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.main_activity_frame, map);
             transaction.commit();

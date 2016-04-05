@@ -1,11 +1,7 @@
-package com.makman.placesapp.Activities;
+package com.makman.placesapp;
 
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.makman.placesapp.Fragments.LoginFragment;
-import com.makman.placesapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,4 +14,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.main_activity_frame, new LoginFragment());
         transaction.commit();
     }
+
+
 }
