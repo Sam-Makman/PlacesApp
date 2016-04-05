@@ -1,11 +1,7 @@
 package com.makman.placesapp;
 
 import android.app.DialogFragment;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +15,8 @@ public class MarkerDialogFragment extends DialogFragment implements View.OnClick
 
     EditText mTitle;
     EditText mDescription;
-    Button mButton;
+    Button mOkButton;
+    Button mCancelButton;
 
     LatLng mLatlng;
     DialogListener mListener;
@@ -32,11 +29,13 @@ public class MarkerDialogFragment extends DialogFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_marker_dialog, container);
-
+        getDialog().setTitle(R.string.dialog_new_marker);
         mTitle  = (EditText) rootView.findViewById(R.id.dialog_title);
         mDescription = (EditText) rootView.findViewById(R.id.dialog_description);
-        mButton = (Button) rootView.findViewById(R.id.dialog_ok);
-        mButton.setOnClickListener(this);
+        mOkButton = (Button) rootView.findViewById(R.id.dialog_ok);
+        mOkButton.setOnClickListener(this);
+        mCancelButton = (Button) rootView.findViewById(R.id.dialog_cancel);
+        mCancelButton.setOnClickListener(this);
         return rootView;
     }
     public void setmLatlng(LatLng coords){
@@ -50,6 +49,10 @@ public class MarkerDialogFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        mListener.onDialogComplete(mLatlng, mTitle.getText().toString(), mDescription.getText().toString());
+        if(v.getId() == mOkButton.getId()) {
+            mListener.onDialogComplete(mLatlng, mTitle.getText().toString(), mDescription.getText().toString());
+        }
+        dismiss();
     }
+
 }

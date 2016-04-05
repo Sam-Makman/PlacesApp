@@ -67,6 +67,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 User user = realm.createObject(User.class);
                 user.setmName(name);
                 realm.commitTransaction();
+                PlaceFragment map = PlaceFragment.newInstance(user);
+                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_activity_frame, map);
+                transaction.commit();
             }else{
                 CoordinatorLayout cView = (CoordinatorLayout) getActivity().findViewById(R.id.login_coordinator_layout);
                 Snackbar.make(cView, R.string.login_user_exists, Snackbar.LENGTH_SHORT).show();
@@ -86,11 +90,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             RealmQuery<User> query = realm.where(User.class);
             query.equalTo("mName", name);
             RealmResults<User> results = query.findAll();
-            User user = results.first();
-            PlaceFragment map = PlaceFragment.newInstance(user);
-            android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_activity_frame, map);
-            transaction.commit();
+            if(results.size() == 0){
+                CoordinatorLayout cView = (CoordinatorLayout) getActivity().findViewById(R.id.login_coordinator_layout);
+                Snackbar.make(cView, R.string.login_no_user, Snackbar.LENGTH_SHORT).show();
+            }else {
+                User user = results.first();
+                PlaceFragment map = PlaceFragment.newInstance(user);
+                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_activity_frame, map);
+                transaction.commit();
+            }
 
 
         }else{
@@ -102,7 +111,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private String validUserString(){
         String name = mUserName.getText().toString();
-        name.replaceAll("\\s", "").equals("");
+        name.trim();
         return name;
     }
 

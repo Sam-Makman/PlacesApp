@@ -11,4 +11,8 @@
     <string name="title_activity_maps">Map</string>
     <string name="ok_ok_ok">ok</string>
     <string name="hint_title">Title</string>
+    <string name="login_no_user">User Does Not Exist</string>
+    <string name="dialog_new_marker">New Marker</string>
+    <string name="logout">Logout</string>
+    <string name="that_cancel_is_so_hot_right_now">Cancel</string>
 </resources>

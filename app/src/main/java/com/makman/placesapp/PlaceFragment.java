@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ import com.makman.placesapp.Models.Place;
 import com.makman.placesapp.Models.User;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -40,11 +44,16 @@ public class PlaceFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String name = savedInstanceState.getString(ARG_USER, "");
+            String name = "";
+            if(getArguments() != null){
+
+                name = getArguments().getString(ARG_USER, "");
+            }
 
         if(!name.equals("")) {
             Realm realm = Realm.getDefaultInstance();
@@ -62,6 +71,10 @@ public class PlaceFragment extends Fragment implements OnMapReadyCallback, Googl
         super.onViewCreated(view, savedInstanceState);
         FragmentManager fm = getChildFragmentManager();
         mSupportFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+
+        setHasOptionsMenu(true);
+
+
         if(mSupportFragment == null){
             mSupportFragment = SupportMapFragment.newInstance();
             fm.beginTransaction().replace(R.id.map, mSupportFragment).commit();
@@ -72,18 +85,14 @@ public class PlaceFragment extends Fragment implements OnMapReadyCallback, Googl
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.addMarker(new MarkerOptions().position(new LatLng(10, 10)));
         mMap.setOnMapClickListener(this);
 
-        Realm realm = Realm.getDefaultInstance();
-        RealmQuery<Place> query = realm.where(Place.class);
-        query.equalTo("mName", mUser.getmName());
-        RealmResults<Place> results = query.findAll();
-
+        RealmList<Place> results = mUser.getmPlaces();
         for(Place place : results){
             mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(place.getmLatitude(), place.getmLongitude()))
                             .title(place.getmTitle())
+                            .snippet(place.getmDescription())
             );
         }
 
@@ -116,7 +125,26 @@ public class PlaceFragment extends Fragment implements OnMapReadyCallback, Googl
 
         mMap.addMarker(new MarkerOptions()
                         .position(coords)
-                .title(title)
+                        .title(title)
+                        .snippet(description)
         );
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add(0,0,0,R.string.logout);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case 0:
+                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_activity_frame, new LoginFragment());
+                transaction.commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
